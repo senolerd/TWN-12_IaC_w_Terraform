@@ -2,9 +2,9 @@ def utils
 
 pipeline {   
     agent any
-    tools {
-        maven 'Maven'
-    }
+    // tools {
+    //     maven 'Maven'
+    // }
     stages {
         stage("init") {
             steps {
@@ -14,20 +14,15 @@ pipeline {
             }
         }
         stage("build jar") {
-            steps {
-            }
+
         }
 
         stage("build image") {
-            steps {
 
-            }
         }
 
         stage("deploy") {
-            steps {
 
-            }
         }               
     }
 } 
