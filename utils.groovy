@@ -25,7 +25,7 @@ def createContainerFile(appFile){
 cat <<EOF > Containerfile
 FROM ${env.BASE_IMAGE}
 WORKDIR /app
-COPY ${appFile}
+COPY ${appFile} .
 CMD ["-jar", "${appFile}"]
     """)
 }
