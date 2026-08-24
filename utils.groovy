@@ -4,17 +4,17 @@ def buildMvn() {
 }
 
 def buildContainerImage(){
-    sh("$CONTAINER_RUNTIME -v|| true")
+    echo "Runtime check"
+    sh("$CONTAINER_RUNTIME -v")
+
     sh("printenv")
-    echo("===============")
     
     String appFile = sh( script: "ls target/*.jar", returnStdout: true ).trim().split("/")[-1]
-    String commitIdShort =  env.GIT_COMMIT.take(7)
-
     createContainerFile(appFile)
 
-    String imageName = "java-maven-app:${commitIdShort}-${env.BUILD_ID}"
-    sh("podman build -t ${imageName} .")
+    // env.IMAGE_NAME = "java-maven-app:${env.GIT_COMMIT.take(7)}-b${env.BUILD_ID}"
+
+    sh("podman build -t ${env.IMAGE_NAME} .")
 }
 
 

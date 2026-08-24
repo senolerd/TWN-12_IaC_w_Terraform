@@ -8,6 +8,7 @@ pipeline {
     environment{
         CONTAINER_RUNTIME = "podman"
         BASE_IMAGE = "cgr.dev/chainguard/jre:latest"
+        IMAGE_NAME = "java-maven-app:${env.GIT_COMMIT.take(7)}-b${env.BUILD_ID}"
     }
     stages {
         stage("init") {
