@@ -8,7 +8,7 @@ def buildContainerImage(){
     sh("printenv")
     echo("===============")
     
-    String appFile = sh( script: "ls target/*.jar", returnStdout: true ).trim().split("/")[1]
+    String appFile = sh( script: "ls target/*.jar", returnStdout: true ).trim().split("/")[-1]
     String commitIdShort =  env.GIT_COMMIT.take(7)
 
     createContainerFile(appFile)
@@ -25,7 +25,7 @@ def createContainerFile(appFile){
 cat <<EOF > Containerfile
 FROM ${env.BASE_IMAGE}
 WORKDIR /app
-COPY ${appFile} .
+COPY target/${appFile} .
 CMD ["-jar", "${appFile}"]
     """)
 }
