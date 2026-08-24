@@ -1,5 +1,35 @@
-def deployApp() {
-    echo 'deploying the application...'
+def buildMvn() {
+    echo '[ build_mvn ] Building'
+    sh("mvn clean package")
 }
+
+def buildContainerImage(){
+    sh("$CONTAINER_RUNTIME -v|| true")
+    sh("printenv")
+    echo("===============")
+    
+    String appFile = sh( script: "ls target/*.jar", returnStdout: true ).trim() 
+    String commitIdShort =  env.GIT_COMMIT.take(7)
+
+    createContainerFile(appFile)
+
+    String imageName = "java-maven-app:${commitIdShort}-${env.BUILD_ID}"
+    sh("podman build -t ${imageName} .")
+}
+
+
+def createContainerFile(appFile){
+
+
+    sh("""
+cat <<EOF > Containerfile
+FROM ${env.BASE_IMAGE}
+WORKDIR /app
+COPY ${appFile}
+CMD ["-jar", "${appFile}"]
+    """)
+}
+
+
 
 return this
