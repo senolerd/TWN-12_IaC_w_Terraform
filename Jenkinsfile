@@ -24,9 +24,14 @@ pipeline {
             steps {
                 script {
                     utils = load "utils.groovy"
+                    env.APP_VERSION = sh(script:"mvn help:evaluate -Dexpression=project.version -q -DforceStdout", returnStdout: true).trim()
                 }
             }
         }          
+
+// APP_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+
+
 
         stage("Java Maven code build") {
             steps {
