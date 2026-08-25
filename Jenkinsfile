@@ -6,6 +6,7 @@ pipeline {
         maven 'Maven'
     }
     environment{
+        PROJECT_NAME = "java-maven-app"
         // Container Settings
         CONTAINER_RUNTIME = "podman"
         BASE_IMAGE = "cgr.dev/chainguard/jre:latest"
@@ -29,7 +30,7 @@ pipeline {
                 script {
                     utils = load "utils.groovy"
                     env.APP_VERSION = sh(script:"mvn help:evaluate -Dexpression=project.version -q -DforceStdout", returnStdout: true).trim()
-                    env.IMAGE_NAME = "java-maven-app:${env.APP_VERSION}-${env.GIT_COMMIT.take(7)}-b${env.BUILD_ID}"
+                    env.IMAGE_NAME = "${env.PROJECT_NAME}:${env.APP_VERSION}-${env.GIT_COMMIT.take(7)}-b${env.BUILD_ID}"
 
                 }
             }

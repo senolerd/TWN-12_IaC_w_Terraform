@@ -47,8 +47,13 @@ def iacDeploy(){
                   -backend-config="bucket=${env.S3_BACKEND_BUCKET}" \
                   -backend-config="key=${env.S3_BACKEND_BUCKET}" \
                   -backend-config="region=${env.REGION}"
+                terraform apply -refresh-only 
                 terraform validate 
-                terraform apply -auto-approve -var="keypair_name=${env.EC2_KEY_PAIR_NAME}" -var="region=${env.REGION}" -var="instance_type=${env.INSTANCE_TYPE}"
+                terraform apply -auto-approve \
+                    -var="project_name=${env.PROJECT_NAME}" \
+                    -var="region=${env.REGION}" \
+                    -var="keypair_name=${env.EC2_KEY_PAIR_NAME}" \
+                    -var="instance_type=${env.INSTANCE_TYPE}"
             """)
             env.EC2_SERVER_IP = sh(script:"terraform output -raw server_addr", returnStdout: true).trim()
         }
@@ -75,8 +80,8 @@ def deployApplication() {
 
             echo "[deployApplication]: Checking podman whether it answers"
             sh """
-                ssh -o StrictHostKeyChecking=no ubuntu@${EC2_SERVER_IP} 'podman rm -f java-maven-app || true'
-                ssh -o StrictHostKeyChecking=no ubuntu@${EC2_SERVER_IP} 'podman run -d -p 8080:8080 --name java-maven-app ${OCI_REG_ADDR}/${DOCKER_USER}/${IMAGE_NAME}' 
+                ssh -o StrictHostKeyChecking=no ubuntu@${EC2_SERVER_IP} 'podman rm -f ${env.PROJECT_NAME} || true'
+                ssh -o StrictHostKeyChecking=no ubuntu@${EC2_SERVER_IP} 'podman run -d -p 8080:8080 --name ${env.PROJECT_NAME} ${OCI_REG_ADDR}/${DOCKER_USER}/${IMAGE_NAME}' 
             """
         }
     }
