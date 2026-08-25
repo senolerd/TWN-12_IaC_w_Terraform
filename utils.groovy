@@ -62,7 +62,7 @@ def sshWork() {
         withCredentials([usernamePassword(credentialsId: 'dockerhub-pat-rw', passwordVariable: 'DOCKER_PW', usernameVariable: 'DOCKER_USER')]) { 
             
             echo "[sshWork]: Checking podman whether it answers"
-            sh "ssh -o StrictHostKeyChecking=no ubuntu@${EC2_SERVER_IP} podman image ls"
+            sh "ssh -o StrictHostKeyChecking=no ubuntu@${EC2_SERVER_IP} 'podman image ls' " 
 
             echo "[sshWork]: Trying to login docker.io"
             sh 'ssh -o StrictHostKeyChecking=no ubuntu@${EC2_SERVER_IP} "podman login ${OCI_REG_ADDR} -u $DOCKER_USER -p $DOCKER_PW" '
@@ -71,7 +71,10 @@ def sshWork() {
             sh """ ssh -o StrictHostKeyChecking=no ubuntu@${EC2_SERVER_IP} "podman pull ${OCI_REG_ADDR}/${DOCKER_USER}/${IMAGE_NAME}" """
 
             echo "[sshWork]: Checking podman whether it answers"
-            sh "ssh -o StrictHostKeyChecking=no ubuntu@${EC2_SERVER_IP} podman image ls"
+            sh """ 
+                ssh -o StrictHostKeyChecking=no ubuntu@${EC2_SERVER_IP} 'podman delete java-maven-app -f || true'
+                ssh -o StrictHostKeyChecking=no ubuntu@${EC2_SERVER_IP} 'podman run -d -p 8080:8080 --name java-maven-app ${OCI_REG_ADDR}/${DOCKER_USER}/${IMAGE_NAME} '
+            """
         }
     }
 }
