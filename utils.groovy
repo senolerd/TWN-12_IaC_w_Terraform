@@ -72,10 +72,6 @@ def sshWork() {
 
             echo "[sshWork]: Checking podman whether it answers"
             sh "ssh -o StrictHostKeyChecking=no ubuntu@${EC2_SERVER_IP} podman image ls"
-
-
-            // 
-
         }
     }
 }
