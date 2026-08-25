@@ -79,7 +79,4 @@ def sshWork() {
     }
 }
 
-
-
-
 return this
