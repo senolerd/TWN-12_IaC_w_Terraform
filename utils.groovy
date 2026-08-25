@@ -47,7 +47,7 @@ def iacDeploy(){
                 terraform validate 
                 terraform apply -auto-approve -var="keypair_name=${env.EC2_KEY_PAIR_NAME}" -var="region=${env.REGION}"
             """)
-            env.EC2_SERVER_IP = sh(script:"terraform output server_addr", returnStdout: true).trim()
+            env.EC2_SERVER_IP = sh(script:"terraform output -raw server_addr", returnStdout: true).trim()
         }
     }
 }
