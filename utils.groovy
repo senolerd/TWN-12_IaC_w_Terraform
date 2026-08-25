@@ -51,4 +51,11 @@ def iacDeploy(){
 }
 
 
+def sshWork() {
+    echo "SERVER ADDRESS TO SSH: ${env.EC2_SERVER_IP}"
+}
+
+
+
+
 return this

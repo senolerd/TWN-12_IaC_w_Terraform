@@ -48,6 +48,14 @@ pipeline {
                 }
             }
         }
+
+        stage("SSH"){
+            steps{
+                script{
+                    utils.sshWork()
+                }
+            }
+        }
     }
 } 
 
