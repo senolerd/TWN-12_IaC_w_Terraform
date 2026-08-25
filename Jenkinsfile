@@ -14,7 +14,7 @@ pipeline {
         DOCKER_CRED_ID= "dockerhub-pat-rw" // Jenkins Username/Password Kind of credential's id
 
         // AWS
-        AWS_CRED_ID
+        AWS_CRED_ID = "aws_iam_user_access_key"
     }
     stages {
         stage("init") {
