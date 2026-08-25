@@ -72,7 +72,7 @@ def sshWork() {
 
             echo "[sshWork]: Checking podman whether it answers"
             sh """ 
-                ssh -o StrictHostKeyChecking=no ubuntu@${EC2_SERVER_IP} 'podman delete java-maven-app  || true'
+                ssh -o StrictHostKeyChecking=no ubuntu@${EC2_SERVER_IP} 'podman rm -f java-maven-app  || true'
                 ssh -o StrictHostKeyChecking=no ubuntu@${EC2_SERVER_IP} 'podman run -d -p 8080:8080 --name java-maven-app ${OCI_REG_ADDR}/${DOCKER_USER}/${IMAGE_NAME} '
             """
         }
