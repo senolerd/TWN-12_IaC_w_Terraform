@@ -36,8 +36,6 @@ CMD ["-jar", "${jarFile}"]
     """)
 }
 
-
-
 def iacDeploy(){
     echo "[createContainerFile]: Creating Containerfile"
     withCredentials([usernamePassword(credentialsId: 'aws_iam_user_access_key', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
