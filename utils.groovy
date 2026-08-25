@@ -47,7 +47,6 @@ def iacDeploy(){
                   -backend-config="bucket=${env.S3_BACKEND_BUCKET}" \
                   -backend-config="key=${env.S3_BACKEND_BUCKET}" \
                   -backend-config="region=${env.REGION}"
-                terraform apply -refresh-only 
                 terraform validate 
                 terraform apply -auto-approve \
                     -var="project_name=${env.PROJECT_NAME}" \
