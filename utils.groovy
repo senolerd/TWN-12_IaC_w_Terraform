@@ -56,6 +56,9 @@ def iacDeploy(){
 def sshWork() {
     echo "SERVER ADDRESS TO SSH: ${env.EC2_SERVER_IP}"
 
+    echo "90 sec sleep before asking podman"
+    sleep(time: 90, unit: 'SECONDS')
+    
     sshagent(credentials: ['ec2_pem_for_ubuntu']) {
         sh("ssh -o StrictHostKeyChecking=no ubuntu@${env.EC2_SERVER_IP} podman image ls")
     }
