@@ -43,7 +43,9 @@ pipeline {
 
         stage("iacDeploy") {
             steps{
-                utils.buildContainerImage()    
+                script {
+                    utils.iacDeploy()    
+                }
             }
         }
     }
