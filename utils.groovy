@@ -57,7 +57,7 @@ def sshWork() {
     echo "SERVER ADDRESS TO SSH: ${env.EC2_SERVER_IP}"
 
     sshagent(credentials: ['ec2_pem_for_ubuntu']) {
-        sh('ssh ubuntu@${EC2_SERVER_IP} podman image ls')
+        sh('ssh ubuntu@$EC2_SERVER_IP podman image ls')
     }
     
 }
