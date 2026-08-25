@@ -68,7 +68,7 @@ def sshWork() {
             sh 'ssh -o StrictHostKeyChecking=no ubuntu@${EC2_SERVER_IP} "podman login ${OCI_REG_ADDR} -u $DOCKER_USER -p $DOCKER_PW" '
 
             echo "[sshWork]: Pulling new image to host"
-            sh """ ssh -o StrictHostKeyChecking=no ubuntu@${EC2_SERVER_IP} "podman pull ${OCI_REG_ADDR}/${USER}/${IMAGE_NAME}" """
+            sh """ ssh -o StrictHostKeyChecking=no ubuntu@${EC2_SERVER_IP} "podman pull ${OCI_REG_ADDR}/${DOCKER_USER}/${IMAGE_NAME}" """
 
             echo "[sshWork]: Checking podman whether it answers"
             sh "ssh -o StrictHostKeyChecking=no ubuntu@${EC2_SERVER_IP} podman image ls"
