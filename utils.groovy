@@ -14,11 +14,13 @@ def buildContainerImage(){
     
     withCredentials([usernamePassword(credentialsId: 'dockerhub-pat-rw', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
         echo "[ buildMvn ] Building image "
-        sh('podman build -t ${OCI_REG_ADDR}/${USER}${IMAGE_NAME} .')
+        sh('podman build -t ${OCI_REG_ADDR}/${USER}/${IMAGE_NAME} .')
+
         echo "[ buildMvn ] logging in to ${env.OCI_REG_ADDR}"
         sh('podman login $OCI_REG_ADDR -u ${USER} -p ${PASS}')
-        echo "[ buildMvn ] pushing [${env.OCI_REG_ADDR}/${USER}${env.IMAGE_NAME}] to  ${env.OCI_REG_ADDR}"
-        sh("podman push ${env.OCI_REG_ADDR}/${USER}${env.IMAGE_NAME}")
+
+        echo "[ buildMvn ] pushing"
+        sh('podman push ${OCI_REG_ADDR}/${USER}/${IMAGE_NAME}')
     }
 }
 
