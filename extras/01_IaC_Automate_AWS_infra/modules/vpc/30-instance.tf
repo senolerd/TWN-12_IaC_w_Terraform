@@ -13,7 +13,7 @@ resource "aws_instance" "podman_server" {
         apt update -y
         apt install podman -y
         su - ubuntu -c "loginctl enable-linger"
-        su - ubuntu -c "podman run -d --name app_server -p 8080:80 docker.io/nginx"
+        # su - ubuntu -c "podman run -d --name app_server -p 8080:80 docker.io/nginx"
         EOF
 }
 

@@ -45,6 +45,7 @@ def iacDeploy(){
                 terraform init
                 terraform apply -auto-approve
             """)
+            env.EC2_SERVER_IP = sh(script:"terraform output server_addr", returnStdout: true).trim()
         }
     }
 }
