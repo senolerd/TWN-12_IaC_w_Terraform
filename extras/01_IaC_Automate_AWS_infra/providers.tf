@@ -11,10 +11,13 @@ terraform {
     }
   }
   backend "s3" {
-    bucket         = "terraform-states-916371b2c66c"
-    key            = "01/terraform.tfstate"
-    region         = "us-east-1"
-    encrypt        = true
+    # Bucket, Key and Region should be set at at init, like;
+    # "-backend-config="bucket=...", "-backend-config="key=...", -backend-config="region=..."
+
+    # bucket         = "terraform-states-916371b2c66c"
+    # key            = "01/terraform.tfstate"
+    # region         = "us-east-1"
+    # encrypt        = true
  }
 }
 

@@ -13,10 +13,15 @@ pipeline {
         DOCKER_CRED_ID= "dockerhub-pat-rw" // Jenkins Username/Password Kind of credential's id
 
         // AWS
+        INSTANCE_TYPE = "t3.micro"
         AWS_CRED_ID = "aws_iam_user_access_key"
         REGION = "us-east-1"
         EC2_KEY_PAIR_NAME = "devops-key" // AWS side 
         PEM_CRED_ID = "ec2_pem_for_ubuntu" // SSH Username with private key kind of cred at Jenkins side
+
+        // Terraform state  S3 backend
+        S3_BACKEND_BUCKET = "terraform-states-916371b2c66c" // Bucket should be created before 
+        S3_BACKEND_KEY = "01/terraform.tfstate"
     }
     stages {
         stage("init") {
@@ -58,10 +63,10 @@ pipeline {
             }
         }
 
-        stage("Deploy app to EC2/Podman"){
+        stage("Deploy App to EC2/Podman"){
             steps{
                 script{
-                    utils.sshWork()
+                    utils.deployApplication()
                 }
             }
         }
