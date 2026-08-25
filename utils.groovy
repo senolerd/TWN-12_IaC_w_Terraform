@@ -26,8 +26,6 @@ def buildContainerImage(){
 
 
 def createContainerFile(appFile){
-
-
     sh("""
 cat <<EOF > Containerfile
 FROM ${env.BASE_IMAGE}
@@ -35,6 +33,24 @@ WORKDIR /app
 COPY target/${appFile} .
 CMD ["-jar", "${appFile}"]
     """)
+}
+
+
+
+def iacDeploy(){
+
+
+    withCredentials([usernamePassword(credentialsId: 'aws_iam_user_access_key', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
+        
+        dir("extras/01_IaC_Automate_AWS_infra")
+            sh("""
+                terraform init
+                terraform apply -auto-approve
+            """)
+    }
+
+
+
 }
 
 
