@@ -9,6 +9,8 @@ pipeline {
         CONTAINER_RUNTIME = "podman"
         BASE_IMAGE = "cgr.dev/chainguard/jre:latest"
         IMAGE_NAME = "java-maven-app:${env.GIT_COMMIT.take(7)}-b${env.BUILD_ID}"
+        OCI_REG_ADDR = "docker.io"
+        DOCKER_CRED_ID= "dockerhub-pat-rw" // Jenkins Username/Password Kind of credential's id         
     }
     stages {
         stage("init") {

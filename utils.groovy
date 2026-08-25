@@ -1,20 +1,25 @@
 def buildMvn() {
-    echo '[ build_mvn ] Building'
+    echo '[ buildMvn ] Building'
     sh("mvn clean package")
 }
 
 def buildContainerImage(){
-    echo "Runtime check"
+    echo "[ buildMvn ] Runtime check"
     sh("$CONTAINER_RUNTIME -v")
 
     sh("printenv")
     
     String appFile = sh( script: "ls target/*.jar", returnStdout: true ).trim().split("/")[-1]
     createContainerFile(appFile)
-
-    // env.IMAGE_NAME = "java-maven-app:${env.GIT_COMMIT.take(7)}-b${env.BUILD_ID}"
-
-    sh("podman build -t ${env.IMAGE_NAME} .")
+    
+    withCredentials([usernamePassword(credentialsId: 'dockerhub-pat-rw', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
+        echo "[ buildMvn ] Building image "
+        sh('podman build -t ${OCI_REG_ADDR}/${USER}${IMAGE_NAME} .')
+        echo "[ buildMvn ] logging in to ${env.OCI_REG_ADDR}"
+        sh('podman login $OCI_REG_ADDR -u ${USER} -p ${PASS}')
+        echo "[ buildMvn ] pushing [${env.OCI_REG_ADDR}/${USER}${env.IMAGE_NAME}] to  ${env.OCI_REG_ADDR}"
+        sh("podman push ${env.OCI_REG_ADDR}/${USER}${env.IMAGE_NAME}")
+    }
 }
 
 
@@ -29,7 +34,6 @@ COPY target/${appFile} .
 CMD ["-jar", "${appFile}"]
     """)
 }
-
 
 
 return this
