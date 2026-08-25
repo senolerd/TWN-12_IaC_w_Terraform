@@ -41,9 +41,9 @@ pipeline {
             }
         }
 
-        stage("IaC") {
+        stage("iacDeploy") {
             steps{
-
+                utils.buildContainerImage()    
             }
         }
     }
