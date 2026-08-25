@@ -15,6 +15,9 @@ pipeline {
 
         // AWS
         AWS_CRED_ID = "aws_iam_user_access_key"
+        REGION = "us-east-1"
+        EC2_KEY_PAIR_NAME = "devops-key" // AWS side 
+        PEM_CRED_ID = "ec2_pem_for_ubuntu" // SSH Username with private key kind of cred at Jenkins side
     }
     stages {
         stage("init") {
@@ -41,7 +44,7 @@ pipeline {
             }
         }
 
-        stage("iacDeploy") {
+        stage("AWS Infra Deploy w/ EC2") {
             steps{
                 script {
                     utils.iacDeploy()    
@@ -49,7 +52,7 @@ pipeline {
             }
         }
 
-        stage("SSH"){
+        stage("Deploy app to EC2/Podman"){
             steps{
                 script{
                     utils.sshWork()
