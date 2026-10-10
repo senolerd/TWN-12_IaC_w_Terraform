@@ -2,3 +2,4 @@ extras
 Jenkinsfile
 README.md
 utils.groovy
+.DS_Store
